@@ -26,14 +26,14 @@ void print(std::vector<std::string> dict){
     std::cout<<std::endl;
 }
 
-bool f(char letter, int pos, int num, std::string word){
-    int p=word.find(letter);
+bool f(std::string letter, int pos, int num, std::string word){
+    int p=word.find(letter,pos);
     switch (num) {
         case 1:
             return word.find(letter)==std::string::npos;
             break;
         case 2:
-            return word.find(letter)!=std::string::npos and p!=pos;
+            return word.find(letter)!=std::string::npos && p!=pos;
             break;
         case 3:
             return pos==p;
@@ -46,23 +46,42 @@ bool f(char letter, int pos, int num, std::string word){
 int main() {
     setlocale(LC_ALL, "Russian");
     std::ifstream in("/Users/romburunduk/projects/wordle/wordle/dict.txt");
-    std::vector<std::string> dict(4154);
-    for (int i=0; i<4154; i++) {
+    int n=4154;
+    std::vector<std::string> dict(n);
+    for (int i=0; i<n; i++) {
         in>>dict[i];
     }
     
-    std::string wor("сталь");
-    int con[5]={2,2,1,1,3};
+    std::string wor("boo");
+    std::vector<int> con(5);
+    std::cout<<"Введите слово"<<std::endl;
+    std::cin>>wor;
+    std::cout<<"Введите условия"<<std::endl;
+    for (int j : con) {
+        std::cin>>j;
+    }
 
     
-    int n=4154, t=0;
-    while (t<n) {
-        if (f(wor[0], 0, con[0], dict[t]) and f(wor[1], 1, con[1], dict[t]) and f(wor[2], 2, con[2], dict[t]) and f(wor[3], 3, con[3], dict[t]) and f(wor[4], 4, con[4], dict[t]) ) {
-            std::cout<<dict[t]<<' ';
-            t+=1;
-        } else {
-            rem(dict, t);
-            n--;
+    while (wor!="end") {
+        int t=0;
+        while (t<n) {
+            if (f(wor.substr(0,2), 0, con[0], dict[t]) && f(wor.substr(2,2), 2, con[1], dict[t]) && f(wor.substr(4,2), 4, con[2], dict[t]) && f(wor.substr(6,2), 6, con[3], dict[t]) && f(wor.substr(8,2), 8, con[4], dict[t]) ) {
+                std::cout<<dict[t]<<' ';
+                t+=1;
+            } else {
+                rem(dict, t);
+                n--;
+            }
+        }
+        std::cout<<std::endl;
+        std::cout<<"Введите слово"<<std::endl;
+        std::cin>>wor;
+        if (wor=="end") {
+            break;
+        }
+        std::cout<<"Введите условия"<<std::endl;
+        for (int j=0; j<5; j++) {
+            std::cin>>con[j];
         }
     }
     std::cout<<std::endl;
