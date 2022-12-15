@@ -20,13 +20,6 @@ int count_letter (std::string s, std::string a) {
   return count;
 }
 
-//int counting (std::string letter, std::vector<std::string> dict){
-//    int number=0;
-//    for (std::string i : dict) {
-//        number+=std::count(i.begin(), i.end(), letter);
-//    }
-//    return number;
-//}
 
 void print(std::string mp[5][2]){
     for (int i=0; i<5; i++) {
@@ -93,27 +86,30 @@ int main() {
             }
         }
         std::cout<<std::endl;
-        std::map<int,std::string> mp;
+        std::multimap<int,std::string> mp;
         
         
         
-//        //  вывод оптимального слова
-//        for (int l=0; l<32; l++) {
-//            int n=0;
-//            for (std::string w : dict) {
-//                n += std::count(w.begin(), w.end(), alph[l]);
-//                //n += count_letter(w, alph[l]);
-//            }
-//            mp[n+1]=alph[l];
-//        }
-//
-//        std::map <int, std::string> :: iterator it = mp.begin();
-//        it++;
-//        for (int i = 0; it != mp.end(); it++, i++) {  // выводим их
-//                std::cout << i << ") Ключ " << it->first << ", значение " << it->second << std::endl;
-//            }
+        //  вывод оптимального слова
+        for (int l=0; l<32; l++) {
+            int n=0;
+            for (int j=0; j<dict.size(); j++) {
+                if (dict.at(j).find(alph.substr(l*2,2))!=std::string::npos) {
+                    n+=1;
+                }
+            }
+            if (n!=0 && n!=dict.size()) {
+                mp.insert(decltype(mp)::value_type(n,alph.substr(l*2,2)));
+            }
+            
+        }
+
+        std::map <int, std::string> :: iterator it = mp.begin();
+        for (int i = 0; it != mp.end(); it++, i++) {  // выводим их
+                std::cout << it->first << " " << it->second << std::endl;
+            }
         
-        std::cout<<std::endl;
+        //std::cout<<std::endl;
         std::cout<<"Введите слово"<<std::endl;
         std::cin>>wor;
         if (wor=="все") {
@@ -126,4 +122,3 @@ int main() {
         }
     }
 }
-
